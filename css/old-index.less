@@ -1,0 +1,208 @@
+/*
+ * 在当前LESS文件中导入所依赖的LESS文件
+ * ->reference：只是导入过来供调取使用,编译的时候不编译这里的代码
+ */
+@import "reset";
+@import (reference) "public";
+
+html {
+  font-size: 100px;
+}
+.icon-heart{
+    position: relative;
+    width: .68rem;
+    height: .58rem;
+  &:before, &:after {
+    position: absolute;
+    content: "";
+    left: .34rem;
+    top: 0;
+    width:  .34rem;
+    height: .50rem;
+    background: #fc5254;
+    border-radius: .34rem .34rem 0 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+  }
+  &:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+     transform-origin :100% 100%;
+  }
+}
+
+.icon-images{
+  position: relative;
+  top: 2px;
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #606060;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.icon-images:before{
+  content: '';
+  position: absolute;
+  left: 2px;
+  bottom: 2px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #606060;
+  border-radius: 2px;
+  background-color: #fff;
+}
+
+.head{
+  border-bottom: .02rem solid @color-gray;
+  width: 100%;
+  height: 2.63rem;
+  box-sizing: border-box;
+  h1{
+    float: left;
+    height: 2.63rem;
+    line-height: 2.63rem;
+    font-size: 1rem;
+    font-weight: 900;
+    img{
+      display: inline-block;
+      margin:0 .4rem 0 .63rem;
+      width:1.50rem ;
+      height: 1.16rem;
+    }
+    //span:nth-child(2){
+    //
+    //  vertical-align: middle;
+    //}
+  }
+  .channel-icon{
+    float: right;
+    padding:1rem .9rem 0 0;
+    //text-align: center;
+    //padding-right: .9rem;
+    //font-size: .54rem;
+    //text-align: center;
+    .chIcon{
+      position: relative;
+
+    }
+    .chIcon,.chIcon:before,.chIcon:after{
+      display:block;
+      margin: 0 auto;
+      content: "";
+      width: 1.06rem;
+      height: .06rem;
+
+    //  margin-bottom: .2rem;
+        //display:block;
+        //margin:0 auto .2rem;
+        //width: 1.06rem;
+        //height: .06rem;
+        background: @color-content;
+    }
+    .chIcon:before{
+      position: absolute;
+      top: -.2rem;
+    }
+    .chIcon:after{
+      position: absolute;
+      top: .2rem;
+    }
+    .ch-desc{
+      display: inline-block;
+      height: 1.32rem;
+      line-height: 1.32rem;
+      font-size: .54rem;
+    }
+  }
+}
+.banner{
+  margin-bottom: .43rem;
+  width: 100%;
+  height: 8.70rem;
+  .outer{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      a{
+        float: left;
+        height: 100%;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+}
+.channel {
+  padding: 0 4% .43rem;
+  h2{
+    height: 2.50rem;
+    line-height: 2.50rem;
+    font-size: .88rem;
+    color: @color-content;
+  }
+  .channel-list{
+    .ch-list{
+      margin-left: -3%;
+      a{
+        float: left;
+        margin-left: 3%;
+        width: 86%/4;
+        color: #444444;
+        img{
+          border-radius: .3rem .3rem 0 0;
+          width: 100%;
+          height: 4.74rem;
+        }
+        p{
+          border-radius:0 0 .3rem .3rem;
+          height:1.32rem ;
+          line-height: 1.32rem;
+          font-size: .66rem;
+          text-align: center;
+          font-weight: 900;
+          letter-spacing: .05rem;
+          background: #eee5de;
+        }
+      }
+
+      }
+    }
+
+  }
+.list{
+  padding-left: 3.6%;
+  h2{
+    height: 2.52rem;
+    line-height: 2.52rem;
+    font-size: .88rem;
+    color: @color-content;
+  }
+  .waterfall{
+    ul{
+      float: left;
+      margin-right: 4%;
+      width: 88.4%/2;
+    }
+    li{
+      width: 100%;
+      img{
+        width: 100%;
+        border-radius: .3rem;
+      }
+    }
+  }
+}
