@@ -378,21 +378,23 @@ body {
 }
 .banner {
   position: relative;
-  width: 100%;
+  /*width: 100%;*/
   height: 4.63rem;
   overflow: hidden ;
+  /*visibility: hidden;*/
 }
-.banner .banner-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 4.63rem;
+.banner .swipe-wrap {
+  position: relative;
+  /*overflow: hidden;*/
 }
-.banner .banner-inner .banner-img {
+.banner .swipe-wrap .banner-img {
   float: left;
-  height: 100%;
+  display: block;
+  width: 100%;
+  height: 4.63rem;
+  position: relative;
 }
-.banner .banner-inner .banner-img img {
+.banner .swipe-wrap .banner-img img {
   width: 100%;
   height: 100%;
 }

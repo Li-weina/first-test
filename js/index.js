@@ -119,16 +119,32 @@ var opGirlFn = {
                 });
                 $(".swiper-wrapper").html(str).css("width", $(window).width() * data.length + 1);
                 $(".swiper-slide").css("width", $(window).width()).tap(function () {
-                    if(flag == true){
-                        $('header').css('height',0);
-                        $('.bottom-info').css('height',0);
+                    if (flag == true) {
+                        $('header').css('height', 0);
+                        $('.bottom-info').css('height', 0);
                         flag = false;
                         return;
                     }
-                    $('header').css('height','1.32rem');
-                    $('.bottom-info').css('height','2.64rem');
+                    $('header').css('height', '1.32rem');
+                    $('.bottom-info').css('height', '2.64rem');
                     flag = true;
                 });
+                var mySrc = $('.detail-pic img')[0].src;
+                $('.load-icon').attr("href",mySrc).attr("download", "img.png");
+                var clipboard = new Clipboard('.share', {
+                    text: function() {
+                        return mySrc;
+                    }
+                });
+
+                clipboard.on('success', function(e) {
+                    console.log("ok");
+                });
+
+                clipboard.on('error', function(e) {
+                    console.log("error");
+                });
+
             }
             var mySwiper = new Swiper('.swiper-container', {
                 direction: 'horizontal',
@@ -136,9 +152,25 @@ var opGirlFn = {
                 freeMode: false,
                 // observer:true,
                 // observeParents:true,
-                onSlideChangeEnd: function(swiper){
+                onSlideChangeEnd: function (swiper) {
+                    var mySrc = $('.detail-pic img')[swiper.activeIndex].src;
+                    alert(mySrc);
                     $(".index").html((swiper.activeIndex + 1));
                     self.random(data.labels);
+                    $('.load-icon').attr("href",mySrc).attr("download", "img.png");
+                    var clipboard = new Clipboard('.share', {
+                        text: function() {
+                            return mySrc;
+                        }
+                    });
+
+                    clipboard.on('success', function(e) {
+                        console.log("ok");
+                    });
+
+                    clipboard.on('error', function(e) {
+                        console.log("error");
+                    });
                 }
             });
             $('.detail-pic img').on('load', function () {
@@ -236,18 +268,18 @@ var opGirlFn = {
         var success = function (data) {
             var waterData = data.data;
 
-            if(waterData.length > 0){
+            if (waterData.length > 0) {
                 console.log(2);
-                $('.ser-box').css('display','none');
-                $('.ser-content').css('display','block');
-                $('.no-ser').css('display','none');
-                self.waterFall(waterData,24);
+                $('.ser-box').css('display', 'none');
+                $('.ser-content').css('display', 'block');
+                $('.no-ser').css('display', 'none');
+                self.waterFall(waterData, 24);
                 total = data.count;
                 page++;
-            }else {
-                $('.ser-box').css('display','none');
-                $('.ser-content').css('display','none');
-                $('.no-ser').css('display','block');
+            } else {
+                $('.ser-box').css('display', 'none');
+                $('.ser-content').css('display', 'none');
+                $('.no-ser').css('display', 'block');
             }
         };
 
@@ -255,16 +287,16 @@ var opGirlFn = {
         //     console.log(1);
         //
         // };
-        $('.ser-btn').on('click',function () {
+        $('.ser-btn').on('click', function () {
             var val = $('input').val();
             console.log(val);
-            self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=1&keywords='+val, 'get', success);
+            self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=1&keywords=' + val, 'get', success);
             window.addEventListener('scroll', function () {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                    self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page='+page+'&keywords='+val+'&page_limit=20', 'get', function (data) {
+                    self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=' + page + '&keywords=' + val + '&page_limit=20', 'get', function (data) {
                         var waterData = data.data;
-                        if(waterData.length > 0){
-                            self.waterFall(waterData,24);
+                        if (waterData.length > 0) {
+                            self.waterFall(waterData, 24);
                             page++;
                         }
                     });
@@ -310,12 +342,8 @@ var opGirlFn = {
     },
     //轮播图
     banner: function () {
-        var $bannerInner = $('.banner-inner'),
-            $bannerFocus = $('.banner-focus'),
-            devWidth = $(window).width(),
-            step = 0;
-        // var si;
-        // clearInterval(si);
+        var $bannerInner = $('.swipe-wrap'),
+            $bannerFocus = $('.banner-focus');
         var bindData = function (data) {
             var str = '', focusStr = '';
             $(data).each(function (index, item) {
@@ -324,47 +352,85 @@ var opGirlFn = {
                     + '</a>';
                 focusStr += '<li class="b-focus"></li>'
             });
-            str += '<a class="banner-img" href="subject.html?id=' + $(data)[0].id + '">'
-                + '<img src="http://image.spider.oupeng.com/' + $(data)[0].checksum + '/300-0-5.jpeg" alt="' + $(data)[0].name + '">'
-                + '</a>';
             $bannerInner.html(str);
             $bannerFocus.html(focusStr);
-            $('.banner-focus li').first().addClass('selected');
-            var width = (data.length +1) * devWidth;
-            $bannerInner.css('width', width);
-            $('.banner-img').css('width', devWidth);
-
-        };
-        var autoMove = function (data) {
-            if (step == data.length) {
-                step = 0;
-                $bannerInner.css('left', 0);
-            }
-            step++;
-            $bannerInner.animate({'left': step * (-devWidth)}, 500);
-
-        };
-        var focusAlign = function (data) {
-            var tempStep = step === data.length ? 0 : step;
-            $bannerFocus.children().each(function (index, item) {
-                if (index == tempStep) {
-                    $(this).addClass('selected').siblings().removeClass('selected');
-                }
-            })
+            $('.banner-focus li').eq(0).addClass('selected');
         };
         this.homeRequest(function (data) {
             var bannerData = data.banners;
             console.log(bannerData);
             if (bannerData.length > 0) {
                 bindData(bannerData);
-                window.setInterval(function () {
-                    autoMove(bannerData);
-                    focusAlign(bannerData);
-                }, 3000);
+                var ele = document.getElementById('banner');
+                window.mySwipe = Swipe(ele, {
+                    auto: 3000,
+                    continuous: true,
+                    callback: function(index, element) {
+                        $(".banner-focus li").eq(index).addClass("selected").siblings().removeClass("selected")}
+                });
+                $(".banner-focus li").click(function(){
+                    mySwipe.slide($(this).index());
+                });
 
             }
         });
     },
+    // banner: function () {
+    //     var $bannerInner = $('.banner-inner'),
+    //         $bannerFocus = $('.banner-focus'),
+    //         devWidth = $(window).width(),
+    //         step = 0;
+    //     // var si;
+    //     // clearInterval(si);
+    //     var bindData = function (data) {
+    //         var str = '', focusStr = '';
+    //         $(data).each(function (index, item) {
+    //             str += '<a class="banner-img" href="subject.html?id=' + item.id + '">'
+    //                 + '<img src="http://image.spider.oupeng.com/' + $(this)[0].checksum + '/300-0-5.jpeg" alt="' + $(this)[0].name + '">'
+    //                 + '</a>';
+    //             focusStr += '<li class="b-focus"></li>'
+    //         });
+    //         str += '<a class="banner-img" href="subject.html?id=' + $(data)[0].id + '">'
+    //             + '<img src="http://image.spider.oupeng.com/' + $(data)[0].checksum + '/300-0-5.jpeg" alt="' + $(data)[0].name + '">'
+    //             + '</a>';
+    //         $bannerInner.html(str);
+    //         $bannerFocus.html(focusStr);
+    //         $('.banner-focus li').first().addClass('selected');
+    //         var width = (data.length + 1) * devWidth;
+    //         $bannerInner.css('width', width);
+    //         $('.banner-img').css('width', devWidth);
+    //
+    //     };
+    //     var autoMove = function (data) {
+    //         if (step == data.length) {
+    //             step = 0;
+    //             $bannerInner.css('left', 0);
+    //         }
+    //         step++;
+    //         $bannerInner.animate({'left': step * (-devWidth)}, 500);
+    //
+    //     };
+    //     var focusAlign = function (data) {
+    //         var tempStep = step === data.length ? 0 : step;
+    //         $bannerFocus.children().each(function (index, item) {
+    //             if (index == tempStep) {
+    //                 $(this).addClass('selected').siblings().removeClass('selected');
+    //             }
+    //         })
+    //     };
+    //     this.homeRequest(function (data) {
+    //         var bannerData = data.banners;
+    //         console.log(bannerData);
+    //         if (bannerData.length > 0) {
+    //             bindData(bannerData);
+    //             window.setInterval(function () {
+    //                 autoMove(bannerData);
+    //                 focusAlign(bannerData);
+    //             }, 3000);
+    //
+    //         }
+    //     });
+    // },
     //首页专题和频道的请求
     homeRequest: function (fn, cid) {
         if (typeof cid != 'undefined') {
@@ -381,7 +447,7 @@ var opGirlFn = {
         return this.requestData('http://api.spider.oupeng.com/gallery/list?bid=' + bid + '&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=1&page_limit=10', 'get', fn)
     },
     //数据的请求
-    requestData: function (url, type, fn,data) {
+    requestData: function (url, type, fn, data) {
         data = data || '';
         $.ajax({
             url: url,
@@ -465,13 +531,13 @@ var opGirlFn = {
             str = '';
         for (var i = 0; i < 5; i++) {
             var random = Math.round(Math.random() * (labels.length - 1));
-            if(ary.indexOf(random) == -1){
+            if (ary.indexOf(random) == -1) {
                 ary.push(random);
                 continue;
             }
             i--;
         }
-    console.log(ary);
+        console.log(ary);
         $(ary).each(function (index, item) {
             var label = labels[item];
             str += '<a href="label.html?id=' + label.id + '">' + label.name + '</a>'
@@ -503,7 +569,9 @@ var opGirlFn = {
 $(document).ready(function ($) {
     if (homeReg.test(url)) {
         opGirlFn.homeInit();
-        window.addEventListener("resize", function(){opGirlFn.banner();}, false);
+        window.addEventListener("resize", function () {
+            opGirlFn.banner();
+        }, false);
     } else if (channelReg.test(url)) {
         opGirlFn.channelInit()
     } else if (subListReg.test(url)) {
@@ -517,5 +585,6 @@ $(document).ready(function ($) {
     } else if (searchReg.test(url)) {
         opGirlFn.searchInit();
     }
+
 });
 

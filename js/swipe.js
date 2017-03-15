@@ -77,7 +77,7 @@ function Swipe(container, options) {
 
   function next() {
 
-    if (index < slides.length - 1) slide(index+1);
+    if (index < slides.length -1 ) slide(index+1);
     else if (options.continuous) slide(0);
 
   }
