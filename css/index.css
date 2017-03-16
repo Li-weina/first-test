@@ -63,12 +63,12 @@ html {
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
 }
-input,
-textarea,
-button,
-a {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+/*input,*/
+/*textarea,*/
+/*button,*/
+/*a {*/
+  /*-webkit-tap-highlight-color: rgba(0, 0, 0, 0);*/
+/*}*/
 article,
 aside,
 details,
@@ -209,41 +209,40 @@ body {
   height: .48rem;
   vertical-align: middle;
 }
-.waterfall .wf-list-inner {
-  margin-left: -3.88%;
-}
-.waterfall .wf-list-inner .wf-col {
-  float: left;
-  margin-left: 3.88%;
-  width: 46%;
-}
-.waterfall .wf-list-inner .wf-col .wf-single {
-  position: relative ;
-}
-.waterfall .wf-list-inner .wf-col .wf-single a {
-  display: block;
+#container{
+  width:100%;
   position: relative;
+}
+.wf-single {
+  /*float: left;*/
+  width: 4.77rem;
+  visibility: hidden;
+  position: absolute ;
+}
+.wf-single a {
+  display: block;
   width: 100%;
 }
-.waterfall .wf-list-inner .wf-col .wf-single a img {
+.wf-single a img {
   width: 100%;
+  height: auto;
   border-radius: .12rem;
 }
-.waterfall .wf-list-inner .wf-col .wf-single .wf-info {
+.wf-single .wf-info {
   padding: .16rem 0 .36rem .06rem ;
   font-size: 0;
 }
-.waterfall .wf-list-inner .wf-col .wf-single .wf-info span {
+.wf-single .wf-info span {
   margin-left: .06rem;
-  vertical-align: middle;
+  vertical-align: -.17rem;
   color: #757575 ;
   font-size: .33rem;
 }
-.waterfall .wf-list-inner .wf-col .wf-single .wf-info .heart {
+.wf-single .wf-info .heart {
   background: url("../image/iconLike_small_1.png") no-repeat;
   background-size: 100% 100%;
 }
-.waterfall .wf-list-inner .wf-col .wf-single .wf-info .pic-count {
+.wf-single .wf-info .pic-count {
   margin-left: .38rem;
   background: url("../image/iconImage.png") no-repeat;
   background-size: 100% 100%;
@@ -431,11 +430,13 @@ body {
   float: left;
   margin-left: 2%;
   width: 23%;
+  color: #434343;
 }
 .wrap .selection-ch .sel-list .sel-list-inner .sel-pics .sel-pic {
   border-radius: .12rem .12rem 0 0;
   width: 100%;
   height: 2.37rem;
+
 }
 .wrap .selection-ch .sel-list .sel-list-inner .sel-pics .sel-desc {
   border-radius: 0 0 .12rem .12rem;
@@ -450,6 +451,10 @@ body {
   width: 100%;
 }
 .end {
+  position:relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   height: 1.84rem;
   line-height: 1.84rem;
   color: #9E9E9E ;
@@ -466,7 +471,7 @@ body {
   height: 100%;
   background: #000;
   opacity: 0.5;
-  filter: opacity(alpha=50);
+  filter: alpha(opacity=50);
 }
 /*频锟斤拷锟斤拷式*/
 .ch-head {
@@ -515,6 +520,7 @@ body {
   color: #555555;
 }
 .nav-list {
+  box-sizing:border-box;
   margin-bottom: .24rem;
   padding: .22rem 1.23rem;
   width: 100%;
@@ -654,6 +660,7 @@ body {
 }
 .no-ser .rel-box .rel-list a {
   display: inline-block;
+  padding: 0 .4rem;
   font-size: .45rem;
   color: #1387F4;
   line-height: 1.12rem;
@@ -673,7 +680,12 @@ body {
   color: #9E9E9E;
 }
 .label-list.other-label {
+  overflow: auto;
   padding-top: 0;
+}
+.label-list.other-label .label-list-inner{
+  overflow: auto;
+  height: auto;
 }
 .label-list.other-label a {
   margin-bottom: .48rem;
@@ -698,6 +710,8 @@ body {
   white-space: nowrap;
 }
 .detail-head .back-icon{
+  width:.72rem;
+  height: .72rem;
   background: url("../image/iconBack-w.png") no-repeat;
   background-size: 100% 100%;
 }
@@ -729,6 +743,7 @@ body {
 }
 .detail-pic img{
   width: 100%;
+  height: auto;
   /*height: 100%;*/
 }
 .loading {
@@ -765,29 +780,6 @@ body {
   color: #727272;
 }
 
-/*.detail-pic-box {*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*background: #000000;*/
-  /*overflow: hidden;*/
-/*}*/
-/*.swiper-wrapper{*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-/*}*/
-/*.swiper-wrapper .swiper-slide{*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*float: left;*/
-  /*background-position: center;*/
-  /*background-repeat: no-repeat;*/
-  /*background-size: auto;*/
-/*}*/
-/*.swiper-container{*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*position: relative;*/
-/*}*/
 .page {
   position: fixed;
   bottom: .36rem ;
@@ -869,4 +861,32 @@ body {
   background: rgba(255, 255, 255, 0.12);
   color: #FFFFFF;
   opacity: 0.6;
+}
+.toTop{
+  opacity: 0;
+  position: fixed;
+  bottom: .48rem;
+  right: .3rem;
+  width: 1.44rem;
+  height: 1.44rem;
+}
+.toTop img {
+  width: 100%;
+  height: 100%;
+}
+.copy{
+  opacity: 0;
+  position: fixed;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  bottom: 2.84rem;
+  z-index: 100;
+  padding: 0 .43rem;
+  line-height: 1.02rem;
+
+  background: #272727;
+  border-radius: .06rem;
+  font-size: .42rem;
+  color: #FFFFFF;
 }

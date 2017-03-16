@@ -41,44 +41,15 @@ var opGirlFn = {
                 $selList.html(str);
             }
             self.listRequest(function (data) {
-                var result = data.data;
+                var num = 0;
+                self.waterFall(data.data, num, bid);
                 total = data.count;
-                self.waterFallStr(result,bid);
-                var $ary = $('.wf-single').splice(0,3);
-                $.each($ary,function (index,item) {
-                    var div = document.createElement('div');
-                    switch (index) {
-                        case 0:
-                            div.className = 'hot one';
-                            break;
-                        case 1:
-                            div.className = 'hot two';
-                            break;
-                        case 2:
-                            div.className = 'hot three';
-                            break;
-                    }
-                    $(item).append(div);
-                });
-
-                $('#container img').on('load',function(){self.waterFall();});
-                window.addEventListener('scroll', function () {
-                    console.log(1);
-                    if ($(window).scrollTop() + 2*$(window).height() >= $(document).height()) {
-                        console.log(2);
-                        self.waterLoadMore(total, page, bid);
-                    }
-                    self.toTop();
-                }, false);
-                // $(window).on('resize',function () {
-                //     self.waterFall();});
-                $('.heart').tap(function () {
-                    var $count = $(this).next('span');
-                    $count.html(parseInt($count.html())+1)
-                });
-
             }, bid);
-
+            window.addEventListener('scroll', function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    self.waterLoadMore(total, page, bid);
+                }
+            }, false);
         });
     },
     //频道页
@@ -110,26 +81,15 @@ var opGirlFn = {
         }, cid);
         this.listRequest(function (data) {
             var bid = self.queryURLParameter(url).id;
-            var result = data.data;
+            self.waterFall(data.data, bid);
             total = data.count;
-            self.waterFallStr(result,bid);
-            $('#container img').on('load',function(){self.waterFall();});
-            window.addEventListener('scroll', function () {
-                console.log(1);
-                if ($(window).scrollTop() + 2*$(window).height() >= $(document).height()) {
-                    console.log(2);
-                    self.waterLoadMore(total, page, bid);
-                }
-                self.toTop();
-            }, false);
-            // $(window).on('resize',function () {
-            //     self.waterFall();});
-            $('.heart').tap(function () {
-                var $count = $(this).next('span');
-                $count.html(parseInt($count.html())+1)
-            });
-
         }, cid);
+        window.addEventListener('scroll', function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500) {
+                self.waterLoadMore(total, page, cid);
+                page++;
+            }
+        }, false);
         this.back();
     },
     //详情页
@@ -137,8 +97,7 @@ var opGirlFn = {
         var bid = this.queryURLParameter(url).id,
             gid = this.queryURLParameter(url).gid,
             self = this,
-            flag = true,
-            timer = null;
+            flag = true;
         this.listRequest(function (data) {
             $('.detail-title').html(data.name);
             $('.like-count').html(data.font_count);
@@ -179,29 +138,13 @@ var opGirlFn = {
                 });
 
                 clipboard.on('success', function(e) {
-                    if(timer){
-                        window.clearTimeout(timer);
-                    }
-                    $('.copy').animate({'opacity':1},200);
-                    timer = window.setTimeout(function () {
-                        $('.copy').animate({'opacity':0},300);
-                    },1500)
+                    console.log("ok");
                 });
 
                 clipboard.on('error', function(e) {
-                    if(timer){
-                        window.clearTimeout(timer);
-                    }
-                    $('.copy').animate({'opacity':1},200).html('复制链接失败');
-                    timer = window.setTimeout(function () {
-                        $('.copy').animate({'opacity':0},300);
-                    },1500)
+                    console.log("error");
+                });
 
-                });
-                $('.heart').tap(function () {
-                    var $count = $(this).next('span');
-                    $count.html(parseInt($count.html())+1)
-                });
             }
             var mySwiper = new Swiper('.swiper-container', {
                 direction: 'horizontal',
@@ -219,6 +162,12 @@ var opGirlFn = {
                         text: function() {
                             return mySrc;
                         }
+                    });
+                    clipboard.on('success', function(e) {
+                        console.log("ok");
+                    });
+                    clipboard.on('error', function(e) {
+                        console.log("error");
                     });
                 }
             });
@@ -245,26 +194,15 @@ var opGirlFn = {
             $('.ch-name').html(data.label.name);
         });
         this.listRequest(function (data) {
-            var result = data.data;
+            console.log(data);
+            self.waterFall(data.data, lid);
             total = data.count;
-            self.waterFallStr(result,lid);
-            $('#container img').on('load',function(){self.waterFall();});
-            window.addEventListener('scroll', function () {
-                console.log(1);
-                if ($(window).scrollTop() + 2*$(window).height() >= $(document).height()) {
-                    console.log(2);
-                    self.waterLoadMore(total, page, lid);
-                }
-                self.toTop();
-            }, false);
-            // $(window).on('resize',function () {
-            //     self.waterFall();});
-            $('.heart').tap(function () {
-                var $count = $(this).next('span');
-                $count.html(parseInt($count.html())+1)
-            });
         }, lid);
-
+        window.addEventListener('scroll', function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                self.waterLoadMore(total, page, lid);
+            }
+        }, false);
         this.back();
     },
     //专题页
@@ -280,44 +218,17 @@ var opGirlFn = {
 
         // "file:///Users/lena/WebstormProjects/opera/public/subList.html?id="+ cid;
         this.listRequest(function (data) {
-            var result = data.data;
+            var bid = self.queryURLParameter(url).id;
+            var num = 0;
+            self.waterFall(data.data, num, bid);
             total = data.count;
-            self.waterFallStr(result,cid);
-            var $ary = $('.wf-single').splice(0,3);
-            $.each($ary,function (index,item) {
-                var div = document.createElement('div');
-                switch (index) {
-                    case 0:
-                        div.className = 'hot one';
-                        break;
-                    case 1:
-                        div.className = 'hot two';
-                        break;
-                    case 2:
-                        div.className = 'hot three';
-                        break;
-                }
-                $(item).append(div);
-            });
-
-            $('#container img').on('load',function(){self.waterFall();});
-            window.addEventListener('scroll', function () {
-                console.log(1);
-                if ($(window).scrollTop() + 2*$(window).height() >= $(document).height()) {
-                    console.log(2);
-                    self.waterLoadMore(total, page, cid);
-                }
-                self.toTop();
-            }, false);
-            // $(window).on('resize',function () {
-            //     self.waterFall();});
-            $('.heart').tap(function () {
-                var $count = $(this).next('span');
-                $count.html(parseInt($count.html())+1)
-            });
-
         }, cid);
-
+        window.addEventListener('scroll', function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500) {
+                self.waterLoadMore(total, page, cid);
+                page++;
+            }
+        }, false);
         this.back();
     },
     //更多专题页
@@ -339,18 +250,19 @@ var opGirlFn = {
         var self = this,
             total = 0,
             page = 1;
-        //接口有改动
-        this.homeRequest(function (data) {
-            var chData = data.channels;
-            var listStr = '';
-            if (chData.length > 0) {
-                $(chData).each(function (index, item) {
-                    listStr += '<a href="channel.html?id=' + item.id + '">' + $(this)[0].name + '</a>';
-                });
-                $('.ser-list').html(listStr);
-                $('.rel-list').html(listStr);
-            }
-        });
+        //请求热门搜索
+        // this.homeRequest(function (data) {
+        //     var chData = data.channels;
+        //     var listStr = '';
+        //     if (chData.length > 0) {
+        //         $(chData).each(function () {
+        //             listStr += '<a href="channel.html?id=' + $(this)[0].id + '">' + $(this)[0].name + '</a>';
+        //         });
+        //         $('.ser-list').html(listStr);
+        //     }
+        // });
+        //请求数据
+
         var success = function (data) {
             var waterData = data.data;
 
@@ -359,58 +271,50 @@ var opGirlFn = {
                 $('.ser-box').css('display', 'none');
                 $('.ser-content').css('display', 'block');
                 $('.no-ser').css('display', 'none');
+                self.waterFall(waterData, 24);
                 total = data.count;
-                self.waterFallStr(waterData,24);
-
-                $('#container img').on('load',function(){self.waterFall();});
-
-                // self.waterFall(waterData, 24);
-                // total = data.count;
-                // page++;
-                window.addEventListener('scroll', function () {
-
-                    if ($(window).scrollTop() + 2*$(window).height() >= $(document).height()) {
-                        var val = $('input').val();
-                        self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=' + page + '&keywords=' + val + '&page_limit=20', 'get', function (data) {
-                            console.log(1);
-                            var waterData = data.data;
-                            if (waterData.length > 0) {
-                                self.waterFall(waterData, 24);
-                                page++;
-                            }
-                        });
-
-                    }
-                    self.toTop();
-                }, false);
-                $('.heart').tap(function () {
-                    var $count = $(this).next('span');
-                    $count.html(parseInt($count.html())+1)
-                });
+                page++;
             } else {
                 $('.ser-box').css('display', 'none');
                 $('.ser-content').css('display', 'none');
                 $('.no-ser').css('display', 'block');
             }
         };
+
+        // var error = function () {
+        //     console.log(1);
+        //
+        // };
         $('.ser-btn').on('click', function () {
             var val = $('input').val();
             console.log(val);
             self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=1&keywords=' + val, 'get', success);
+            window.addEventListener('scroll', function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    self.requestData('http://api.spider.oupeng.com/gallery/list?bid=24&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=' + page + '&keywords=' + val + '&page_limit=20', 'get', function (data) {
+                        var waterData = data.data;
+                        if (waterData.length > 0) {
+                            self.waterFall(waterData, 24);
+                            page++;
+                        }
+                    });
+
+                }
+            }, false);
         });
+
         this.back();
     },
     //瀑布流加载更多
     waterLoadMore: function (total, page, bid) {
         var self = this;
+        console.log(total);
         page++;
-        // if (total > (10 + page * 20)) {
-            this.requestData('http://api.spider.oupeng.com/gallery/list?bid=' + bid + '&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=1&page_limit=20', 'get', function (data) {
-                var result = data.data;
-                self.waterFallStr(result,bid);
-                $('#container img').on('load',function(){self.waterFall();});
+        if (total > (10 + page * 20)) {
+            this.requestData('http://api.spider.oupeng.com/gallery/list?bid=' + bid + '&app_key=opgirl&app_secret=23ebda82e29f3ee38f0a081d97d340a5&page=' + (page + 1) + '&page_limit=20', 'get', function (data) {
+                self.waterFall(data.data, bid);
             });
-        // }
+        }
 
     },
     //频道列单
@@ -552,56 +456,64 @@ var opGirlFn = {
         })
     },
     //瀑布流功能实现
-    waterFall: function () {
-        var margin = $(window).width()/1080 * 42;
-        var li=$("#container li");
-        var	li_W = li[0].offsetWidth + margin;
-        var h=[];
-        var n =2;
-        for(var i = 0;i < li.length;i++) {
-            var li_H = li[i].offsetHeight;
-            if(i < n) {
-                h[i]=li_H;
-                li.eq(i).css("top",0);
-                li.eq(i).css("left",i * li_W);
-                li.eq(i).css("visibility",'visible');
-            }
-            else{
-                var min_H =Math.min.apply(null,h) ;
-                var minKey = this.getarraykey(h, min_H);
-                h[minKey] += li_H ;
-                li.eq(i).css("top",min_H);
-                li.eq(i).css("left",minKey * li_W);
-                li.eq(i).css("visibility",'visible');
-            }
+    waterFall: function (waterData, num, bid) {
+        var self = this,
+            ulsAry = $('.wf-col').toArray();
+        bid = bid || num;
+        if (waterData.length > 0) {
+            $(waterData).each(function (index, item) {
+
+                    var str = self.waterFallStr(item, bid);
+                    ulsAry.sort(function (ul1, ul2) {
+                        console.log(ul1.clientHeight , ul2.clientHeight);
+                        return ul1.clientHeight - ul2.clientHeight;
+                    });
+                    var shortUl = ulsAry[0];
+                console.log(shortUl);
+                    $(shortUl).append(str);
+                    if (typeof num != 'undefined' && num < 3) {
+                        var div = document.createElement('div');
+                        switch (num) {
+                            case 0:
+                                div.className = 'hot one';
+                                break;
+                            case 1:
+                                div.className = 'hot two';
+                                break;
+                            case 2:
+                                div.className = 'hot three';
+                                break;
+                        }
+                        $(str).append(div);
+                        num++;
+                    }
+
+
+
+                });
+
         }
-        var liH = parseInt(li.eq(li.length - 1).css('top'))+ li.eq(li.length - 1).height();
-        $('#container').height(liH);
-    },
-    getarraykey:function (s, v) {
-        for(k in s) {if(s[k] == v) {return k;}}
     },
     //瀑布流字符串拼接
-    waterFallStr: function (result, bid) {
+    waterFallStr: function (item, bid) {
+        var picInfo = item.picture[0];
+        // console.log(picInfo.gallery_id);
         var str = '';
-        $(result).each(function (index, item) {
-            var pic = item.picture[0];
-            str += '<li class="wf-single">'
-                + '<a href="detail.html?id=' + bid + '&gid=' + pic.gallery_id + '">'
-                + '<img src=" http://image.spider.oupeng.com/' + pic.checksum + '/300-0-5.jpeg" alt="' + item.name + '">'
-                + '</a>'
-                + '<div class="wf-info">'
-                + '<i class="icon heart">'
-                + '</i>'
-                + '<span>' + item.font_count + '</span>'
-                + '<i class="icon pic-count">'
-                + '</i>'
-                + '<span>' + item.picture_count + '</span>'
-                + '</div>'
-                + '</li>';
-        });
-        $('#container').append(str);
+        str += '<li class="wf-single">'
+            +'<a href="detail.html?id=' + bid + '&gid=' + picInfo.gallery_id + '">'
+            + '<img src=" http://image.spider.oupeng.com/' + picInfo.checksum + '/300-0-5.jpeg" alt="' + item.name + '">'
+            + '</a>'
+            + '<div class="wf-info">'
+            + '<i class="icon heart">'
+            + '</i>'
+            + '<span>' + item.font_count + '</span>'
+            + '<i class="icon pic-count">'
+            + '</i>'
+            + '<span>' + item.picture_count + '</span>'
+            + '</div>'
+            + '</li>';
 
+        return str;
     },
     //获取到id
     queryURLParameter: function (url) {
@@ -636,20 +548,6 @@ var opGirlFn = {
         });
         console.log(str);
         $('.label-list-inner').html(str);
-    },
-    toTop: function () {
-        var timer = null;
-        if($(window).scrollTop() >= 2*$(window).height()){
-            if(timer){
-                window.clearTimeout(timer);
-            }
-            $('.toTop').animate({'opacity':1},500)
-        }
-        $('.toTop').on('click',function () {
-             timer = window.setTimeout(function () {
-                 $('.toTop').animate({'opacity':0},500)
-            },1000)
-        })
     }
 };
 
@@ -674,5 +572,4 @@ $(document).ready(function ($) {
     }
 
 });
-
 
